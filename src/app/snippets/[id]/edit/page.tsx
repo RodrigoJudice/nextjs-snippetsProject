@@ -1,6 +1,6 @@
 import SnippetEditForm from '@/components/Snippet-edit-form';
 import { db } from '@/db';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import React from 'react'
 interface SnippetEditPageProps {
   params: {
@@ -16,9 +16,17 @@ export default async function SnippetEditPage(props: SnippetEditPageProps) {
   if (!snippet) {
     return notFound();
   }
+  async function updateSnippet(id: number, code: string) {
+    'use server'
+    await db.snippet.update({
+      where: { id },
+      data: { code }
+    })
+    redirect('/');
+  }
 
   return (
-    <SnippetEditForm snippet={snippet} />
+    <SnippetEditForm snippet={snippet} updateSnippet={updateSnippet} />
   );
 
 }
