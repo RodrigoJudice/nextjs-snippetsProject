@@ -16,17 +16,8 @@ export default async function SnippetEditPage(props: SnippetEditPageProps) {
   if (!snippet) {
     return notFound();
   }
-  async function updateSnippet(id: number, code: string) {
-    'use server'
-    await db.snippet.update({
-      where: { id },
-      data: { code }
-    })
-    redirect('/');
-  }
-
   return (
-    <SnippetEditForm snippet={snippet} updateSnippet={updateSnippet} />
+    <SnippetEditForm snippet={snippet} />
   );
 
 }
